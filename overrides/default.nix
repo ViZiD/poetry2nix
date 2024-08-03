@@ -2628,6 +2628,9 @@ lib.composeManyExtensions [
         prev.pyqt5-qt5.overridePythonAttrs (
           old: {
             dontWrapQtApps = true;
+	    buildInputs = old.buildInputs or [ ] ++ [ pkgs.libsForQt5.qt5.qtlottie ];
+              preFixup = ''
+                patchelf --replace-needed libtiff.so.5 libtiff.so $out/${final.python.sitePackages}/PyQt5/Qt5/plugins/imageformats/libqtiff.so'';
             propagatedBuildInputs = old.propagatedBuildInputs or [ ] ++ pyQt5Modules qt5 ++ [
               pkgs.gtk3
               pkgs.speechd
